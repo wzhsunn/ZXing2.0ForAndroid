@@ -51,6 +51,7 @@ public final class R {
         public static final int launcher_icon=0x7f020000;
         public static final int share_via_barcode=0x7f020001;
         public static final int shopper_icon=0x7f020002;
+        public static final int splash=0x7f020003;
     }
     public static final class id {
         public static final int action_settings=0x7f09002e;
@@ -105,15 +106,16 @@ public final class R {
     }
     public static final class layout {
         public static final int activity_display_result=0x7f030000;
-        public static final int bookmark_picker_list_item=0x7f030001;
-        public static final int capture=0x7f030002;
-        public static final int encode=0x7f030003;
-        public static final int help=0x7f030004;
-        public static final int history_list_item=0x7f030005;
-        public static final int search_book_contents=0x7f030006;
-        public static final int search_book_contents_header=0x7f030007;
-        public static final int search_book_contents_list_item=0x7f030008;
-        public static final int share=0x7f030009;
+        public static final int activity_splash=0x7f030001;
+        public static final int bookmark_picker_list_item=0x7f030002;
+        public static final int capture=0x7f030003;
+        public static final int encode=0x7f030004;
+        public static final int help=0x7f030005;
+        public static final int history_list_item=0x7f030006;
+        public static final int search_book_contents=0x7f030007;
+        public static final int search_book_contents_header=0x7f030008;
+        public static final int search_book_contents_list_item=0x7f030009;
+        public static final int share=0x7f03000a;
     }
     public static final class menu {
         public static final int display_result=0x7f0b0000;

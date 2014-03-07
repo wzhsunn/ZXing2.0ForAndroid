@@ -112,8 +112,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
   public static final int HISTORY_REQUEST_CODE = 0x0000bacc;
 
+  public final static String QR_CODE_DATA = "com.google.zxing.client.android.captureactivity.QRDATA";
   public final static String PRODUCT_NODE_SERIALE = "com.google.zxing.client.android.captureactivity.RESULT";
-  
   private  List<ProductNode> productNodes = null;
   private static final Set<ResultMetadataType> DISPLAYABLE_METADATA_TYPES =
       EnumSet.of(ResultMetadataType.ISSUE_NUMBER,
@@ -452,29 +452,41 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
   }
 
   private ProductNode findProductNodeById(String clearData){
-	  if(!clearData.startsWith(QRCODE_START)){
+	  if(clearData == null || clearData.startsWith(QRCODE_START) == false){
 		  return null;
 	  }
 	  
-	  ProductNode node = null;
+	  ProductNode node = new ProductNode();
+	  boolean hasNode = false;
 	  String id = clearData.substring(QRCODE_START.length());
 	  for(int i = 0; i < productNodes.size(); ++ i){
 		  if( productNodes.get(i).getId().equals(id)){
 			  node = productNodes.get(i);
+			  hasNode = true;
 			  break;
 		  }
 	  }
+	  if(hasNode == false){
+		  node = null;
+	  }
 	  return node;
   }
-  private void parseQRData(String cryptoData) throws Exception{
-//	  String clearData = SimpleCrypto.decrypt(MASTER_PASSWORD, cryptoData);
-	  String clearData = "qrcode=1";
+  private void parseQRData(String cryptoData) {
+	  String clearData = null;
+	  try {
+		clearData = SimpleCrypto.decrypt(MASTER_PASSWORD, cryptoData);
+	  } catch (Exception e) {
+		// TODO Auto-generated catch block
+		clearData = null;
+		e.printStackTrace();
+	  }  
+	  Log.v(TAG, "cryptoData[" + cryptoData + "]");
 	  ProductNode node = findProductNodeById(clearData);
-	  
       Intent intent = new Intent(this, DisplayResult.class);
       Bundle bundle = new Bundle();
       bundle.putSerializable(PRODUCT_NODE_SERIALE, node);
       intent.putExtras(bundle);
+      intent.putExtra(QR_CODE_DATA, cryptoData);
       startActivity(intent);
 	  
   }
@@ -499,12 +511,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
       String resultString = rawResult.getText();
       Log.v("resultString", resultString);
       
-      try {
-		parseQRData(resultString);
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+      parseQRData(resultString);
 //      
 //      switch (source) {
 //        case NATIVE_APP_INTENT:
